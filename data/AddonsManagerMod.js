@@ -85,6 +85,11 @@ ACRController.makeButtonUI = function(addonReport)
     button.setAttribute("class", "anon-control");
 
     //button.addEventListener("click", function() { ACRController.openSendReportDialog(addonReport); }, true);
+    button.addEventListener("click", function()
+    {
+        //ACRController.openSendReportDialog(addonReport);
+        self.port.emit("acr_open_submit_report_dialog", addonReport);
+    }, true);
 
     return button;
 }

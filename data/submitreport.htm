@@ -1,0 +1,61 @@
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Submit Report</title>
+<style>
+table th { text-align:right; }
+textarea { width: 100%; }
+.result { width: 100%; text-align:center; font-weight: bold; }
+.error { color: red; }
+.success { color: green; }
+.hidden { display: none; }
+</style>
+</head>
+
+<body>
+<h1>Submit Report</h1>
+
+<table>
+    <tr><th>Add-on</th><td><span id="addon"/></td></tr>
+    <tr><th>Application</th><td><span id="application"/></td></tr>
+    <tr><th>Operating System</th><td><span id="operatingSystem"/></td></tr>
+</table>
+
+<p>This add-on no longer works the way it did in previous versions.</p>
+
+<p>Please provide details of the problems you encountered, including any steps to reproduce:</p>
+
+<textarea id="details"></textarea>
+
+<p>
+<input type="checkbox" id="includeAddons"/>
+<label for="includeAddons">Include a list of my installed add-ons to identify conflicts.</label>
+</p>
+
+<p>
+<input type="checkbox" id="disableAddon"/>
+<label for="disableAddon">Disable this add-on.</label>
+</p>
+
+<p>The information in this report will be publicly accessible.</p>
+
+<div id="buttons" class="result">
+    <button id="submitReport">Submit Report</button>
+</div>
+
+<div id="spinner" class="result hidden">
+    <img src="spinner.gif" width="16" height="16"/>
+</div>
+
+<div id="success" class="result hidden">
+    <p>Your compatibility report was successfully sent. Thank you!</p>
+</div>
+
+<div id="error" class="result hidden">
+    <p class="error">Your compatibility report could not be sent. Please try again later.</p>
+</div>
+
+
+</body>
+</html>
+
