@@ -62,7 +62,7 @@ function loaded()
 
 ACRController.onViewChanged = function()
 {
-    console.log("in view changed: " + gViewController.currentViewId);
+    //console.log("in view changed: " + gViewController.currentViewId);
     //console.log("addon count: " + document.getElementById("addon-list").itemCount);
 
     if (gViewController.currentViewObj._listBox) 
