@@ -39,6 +39,7 @@
 
 ACRController = {};
 
+ACRController.addonReports = {};
 ACRController.COMPATIBILITY_REPORT_URL_BASE = "https://addons.mozilla.org/en-US/firefox/compatibility/reporter/";
 
 self.port.on("init", function(data) {
@@ -51,6 +52,9 @@ self.port.on("acr_have_addon_report", function(addonReport) {
     /*console.log("[worker] Add-on '" + addonReport.guid + "/" + addonReport.version + "' state: '"
         + addonReport.state + "' compatibility: " + (addonReport.compatible?"IS":"IS NOT")
         + " compatible with this version of the platform.");*/
+
+    ACRController.addonReports[addonReport.guid] = addonReport;
+    gViewController.updateCommands();
     
     var ACRUI = ACRController.makeButtonUI(addonReport);
 
@@ -171,9 +175,14 @@ gViewController.commands.cmd_showCompatibilityResults = {
 
 gViewController.commands.cmd_clearCompatibilityReport = {
     isEnabled: function(aAddon) {   
-        return aAddon != null && aAddon.type != "plugin" && aAddon.type != "lwtheme";
+        if (aAddon == null 
+            || aAddon.type == "plugin"
+            || aAddon.type == "lwtheme"
+            || !ACRController.addonReports[aAddon.id]
+            || ACRController.addonReports[aAddon.id].state == 0)
+            return false;
 
-        // TODO don't show this menu item if there is no report
+        return true;
     },
     doCommand: function(aAddon) {   
         if (aAddon)
