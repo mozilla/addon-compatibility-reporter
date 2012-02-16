@@ -10,7 +10,7 @@ self.port.on("init", function(data) {
         var submitData = 
         {
             guid: data.guid,
-            details: document.getElementById("details").textContent,
+            details: document.getElementById("details").value,
             includeAddons: document.getElementById("includeAddons").checked,
             disableAddon: document.getElementById("disableAddon").checked
         };
