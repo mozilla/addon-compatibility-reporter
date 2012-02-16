@@ -3,7 +3,7 @@
     "license": "MPL 1.1/GPL 2.0/LGPL 2.1", 
     "author": "Mozilla Corporation", 
     "contributors": ["Briks Software (http://briks.si)", "David McNamara", "Brian King", "Henrik Skupin", "Vlad Florin Maniac", "Ioana Chiorean", "Blair McBride"],
-    "version": "2.0", 
+    "version": "2.0a1", 
     "fullName": "Addon Compatibility Reporter", 
     "id": "jid1-lJEFPhVbbtBVJQ", 
     "description": "Allows add-on compatibility issues to be reported to Mozilla"
