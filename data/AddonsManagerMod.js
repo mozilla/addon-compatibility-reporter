@@ -42,9 +42,12 @@ ACRController = {};
 ACRController.addonReports = {};
 ACRController.COMPATIBILITY_REPORT_URL_BASE = "https://addons.mozilla.org/en-US/firefox/compatibility/reporter/";
 
-self.port.on("init", function(data) {
-
+self.port.on("acr_init", function(data) {
     ACRController.exclamationImageURL = data.exclamationImageURL;
+});
+
+self.port.on("acr_refresh", function(data) {
+    ACRController.onViewChanged();
 });
 
 self.port.on("acr_have_addon_report", function(addonReport) {
@@ -98,6 +101,13 @@ ACRController.onViewChanged = function()
 {
     //console.log("in view changed: " + gViewController.currentViewId);
     //console.log("addon count: " + document.getElementById("addon-list").itemCount);
+
+    /*
+    var existingACRUI = document.getElementsByAttribute("owner", "acr");
+
+    for (var i=0;i<existingACRUI.length;i++)
+        existingACRUI.item(i).parentNode.removeChild(existingACRUI.item(i));
+    */
 
     if (gViewController.currentViewObj._listBox) 
     {
