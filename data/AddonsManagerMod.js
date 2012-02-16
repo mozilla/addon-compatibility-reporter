@@ -68,6 +68,9 @@ self.port.on("acr_have_addon_report", function(addonReport) {
             {
                 var controlContainer = document.getAnonymousElementByAttribute(elem, 'anonid', 'control-container');
 
+                if (!controlContainer)
+                    return;
+
                 var existingACRUI = controlContainer.getElementsByAttribute("owner", "acr");
 
                 if (existingACRUI.length)
