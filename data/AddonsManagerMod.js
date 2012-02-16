@@ -39,26 +39,53 @@
 
 ACRController = {};
 
+ACRController.COMPATIBILITY_REPORT_URL_BASE = "https://addons.mozilla.org/en-US/firefox/compatibility/reporter/";
+
 self.port.on("init", function(data) {
 
     ACRController.exclamationImageURL = data.exclamationImageURL;
 });
 
-/*
-function loaded() 
-{
-    console.log("in loaded");
+self.port.on("acr_have_addon_report", function(addonReport) {
 
-    try
+    /*console.log("[worker] Add-on '" + addonReport.guid + "/" + addonReport.version + "' state: '"
+        + addonReport.state + "' compatibility: " + (addonReport.compatible?"IS":"IS NOT")
+        + " compatible with this version of the platform.");*/
+    
+    var ACRUI = ACRController.makeButtonUI(addonReport);
+
+    if (gViewController.currentViewObj._listBox) 
     {
-        console.log(gViewController.currentViewId);
+        for (var i=0; i<gViewController.currentViewObj._listBox.itemCount; i++)
+        {
+            var elem = gViewController.currentViewObj._listBox.getItemAtIndex(i);
+
+            if (elem.getAttribute("value") == addonReport.guid) 
+            {
+                var controlContainer = document.getAnonymousElementByAttribute(elem, 'anonid', 'control-container');
+
+                var existingACRUI = controlContainer.getElementsByAttribute("owner", "acr");
+
+                if (existingACRUI.length)
+                    controlContainer.replaceChild(ACRUI, existingACRUI.item(0));
+                else
+                    controlContainer.insertBefore(ACRUI, controlContainer.firstChild);
+            }
+        }
     }
-    catch (e)
+    else if (gViewController.viewPort.selectedPanel.id == "detail-view")
     {
-        console.error(e);
+        var existingACRUI = document.getElementById("detail-view").getElementsByAttribute("owner", "acr");
+
+        if (existingACRUI.length)
+            existingACRUI.item(0).parentNode.removeChild(existingACRUI.item(0));
+
+        if (document.getElementById("detail-uninstall"))
+            document.getElementById("detail-uninstall").parentNode.insertBefore(ACRUI, document.getElementById("detail-uninstall"));
+        else if (document.getElementById("detail-enable-btn"))
+            document.getElementById("detail-enable-btn").parentNode.insertBefore(ACRUI, document.getElementById("detail-enable-btn"));
     }
-}
-*/
+});
 
 ACRController.onViewChanged = function()
 {
@@ -115,6 +142,7 @@ ACRController.makeButtonUI = function(addonReport)
     else if (addonReport.state == 2)
     {
         var hbox = document.createElement("hbox");
+        hbox.setAttribute("owner", "acr");
         hbox.setAttribute("align", "center");
         var image = document.createElement("image");
         image.setAttribute("width", "16");
@@ -127,65 +155,50 @@ ACRController.makeButtonUI = function(addonReport)
 
         return hbox;
     }
-
 }
-
-/*
-ACRController.openSendReportDialog = function(addonReport)
-{
-    window.openDialog("about:blank", "chrome,titlebar,centerscreen,modal");
-
-    window.addEventListener("load", function() {
-        var doc = window.contentDocument;
-        var label = doc.createElement("label");
-        label.setAttribute("value", "test");
-    }, true);
-}
-*/
 
 //Services.obs.addObserver(init, "EM-loaded", false);
-
 document.addEventListener("ViewChanged", ACRController.onViewChanged, true);
 
-self.port.on("acr_have_addon_report", function(addonReport) {
-
-    /*console.log("[worker] Add-on '" + addonReport.guid + "/" + addonReport.version + "' state: '"
-        + addonReport.state + "' compatibility: " + (addonReport.compatible?"IS":"IS NOT")
-        + " compatible with this version of the platform.");*/
-    
-    var ACRUI = ACRController.makeButtonUI(addonReport);
-
-    if (gViewController.currentViewObj._listBox) 
-    {
-        for (var i=0; i<gViewController.currentViewObj._listBox.itemCount; i++)
-        {
-            var elem = gViewController.currentViewObj._listBox.getItemAtIndex(i);
-
-            if (elem.getAttribute("value") == addonReport.guid) 
-            {
-                var controlContainer = document.getAnonymousElementByAttribute(elem, 'anonid', 'control-container');
-
-                var existingACRUI = controlContainer.getElementsByAttribute("owner", "acr");
-
-                if (existingACRUI.length)
-                    controlContainer.replaceChild(ACRUI, existingACRUI.item(0));
-                else
-                    controlContainer.insertBefore(ACRUI, controlContainer.firstChild);
-            }
-        }
+gViewController.commands.cmd_showCompatibilityResults = {
+    isEnabled: function(aAddon) {
+        return aAddon != null && aAddon.type != "plugin" && aAddon.type != "lwtheme";
+    },
+    doCommand: function(aAddon) {
+        openURL(ACRController.COMPATIBILITY_REPORT_URL_BASE + encodeURIComponent(aAddon.id));
     }
-    else if (gViewController.viewPort.selectedPanel.id == "detail-view")
-    {
-        var existingACRUI = document.getElementById("detail-view").getElementsByAttribute("owner", "acr");
+};
 
-        if (existingACRUI.length)
-            existingACRUI.item(0).parentNode.removeChild(existingACRUI.item(0));
+gViewController.commands.cmd_clearCompatibilityReport = {
+    isEnabled: function(aAddon) {   
+        return aAddon != null && aAddon.type != "plugin" && aAddon.type != "lwtheme";
 
-        if (document.getElementById("detail-uninstall"))
-            document.getElementById("detail-uninstall").parentNode.insertBefore(ACRUI, document.getElementById("detail-uninstall"));
-        else if (document.getElementById("detail-enable-btn"))
-            document.getElementById("detail-enable-btn").parentNode.insertBefore(ACRUI, document.getElementById("detail-enable-btn"));
+        // TODO don't show this menu item if there is no report
+    },
+    doCommand: function(aAddon) {   
+        if (aAddon)
+            self.port.emit("acr_clear_compatibility_report", aAddon.id);
     }
+};
 
+var contextMenu = document.getElementById("addonitem-popup");
 
-});
+var showCompatibilityResults = document.createElement("menuitem");
+showCompatibilityResults.setAttribute("command", "cmd_showCompatibilityResults");
+showCompatibilityResults.setAttribute("label", "Show Compatibility Results");
+contextMenu.appendChild(showCompatibilityResults);
+
+var clearCompatibilityReport = document.createElement("menuitem");
+clearCompatibilityReport.setAttribute("command", "cmd_clearCompatibilityReport");
+clearCompatibilityReport.setAttribute("label", "Clear Compatibility Report");
+contextMenu.appendChild(clearCompatibilityReport);
+
+var commandSet = document.getElementById("viewCommandSet");
+var c1 = document.createElement("command");
+c1.setAttribute("id", "cmd_showCompatibilityResults");
+commandSet.appendChild(c1);
+
+var c2 = document.createElement("command");
+c2.setAttribute("id", "cmd_clearCompatibilityReport");
+commandSet.appendChild(c2);
+
