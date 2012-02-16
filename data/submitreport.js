@@ -18,6 +18,10 @@ self.port.on("init", function(data) {
         document.getElementById("buttons").style.display = 'none';
         document.getElementById("spinner").style.display = 'block';
     }, true);
+
+    setTimeout(function() {
+        document.getElementById("details").focus();
+    }, 500);
 });
 
 self.port.on("submit_report_error", function(data) {
