@@ -1,0 +1,26 @@
+body {
+width: 360px;
+font-family: sans-serif; 
+font-size: small;
+}
+
+h1 { font-size: 140%; }
+h2 { font-size: 100%; margin-bottom: 1.5em; font-weight: normal; }
+h3 { font-size: 110%; margin-bottom: 0; padding-bottom: 0;}
+
+#buttons {
+width: 8em;
+text-align:right;
+font-weight: bold;
+float: right;
+}
+
+#buttons button {
+margin: 0.5em;
+}
+
+.result { clear: both; margin-top: 0.5em; }
+.error { color: red; }
+.success { color: green; }
+.hidden { display: none; }
+
