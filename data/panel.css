@@ -1,4 +1,8 @@
-body {
+#submitreport, #finished, #submitting {
+    display: none;
+}
+
+body,table {
 width: 360px;
 font-family: sans-serif; 
 font-size: small;
@@ -23,4 +27,37 @@ margin: 0.5em;
 .error { color: red; }
 .success { color: green; }
 .hidden { display: none; }
+
+.addon-image {
+width: 48px;
+}
+#addonslist h3 {
+font-size: 100%;
+}
+#addons {
+width: 330px;
+}
+#scroller {
+height: 110px;
+max-height: 140px;
+overflow-y: auto;
+overflow-x: hidden;
+}
+
+#version { color: gray; }
+textarea { width: 100%; }
+#addon-image {
+width: 64px;
+padding-left: 10px;
+float: left;
+}
+#skipcomment {
+float: left;
+width: 7em;
+padding: 0.5em;
+}
+#skipcomment a:link {
+color: inherit;
+text-decoration: none;
+}
 

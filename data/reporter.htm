@@ -1,0 +1,75 @@
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Are Your Add-ons Working?</title>
+<link rel="stylesheet" href="panel.css"/>
+</head>
+
+<body>
+
+<div id="addonslist">
+    <h1>Are Your Add-ons Working?</h1>
+    <h2>Report any issues with add-ons below.</h2>
+
+    <div id="scroller">
+        <img id="spinner" src="image/spinner.gif"/>
+        <table id="addons">
+        </table>
+    </div>
+
+    <div id="buttons">
+        <button id="collectReportsButton">Submit</button>
+    </div>
+</div>
+
+<div id="submitreport">
+    <h1>Help Other Firefox Users</h1>
+    <h2>Answering these will make Firefox better for millions of users.</h2>
+
+    <img id="addon-image"/>
+    <input type="hidden" id="guid"/>
+
+    <div style="margin-left: 90px; width: 250px;">
+
+        <h3><span id="addon"> </span> <span id="version"> </span></h3>
+
+        <p style="margin: 0.5em 0">Briefly describe the issues</p>
+
+        <textarea id="details"></textarea>
+
+        <div id="skipcomment"><a id="skipcommenta" href="#">Skip comment</a></div>
+
+        <div id="buttons">
+            <button id="submitReportButton">Submit</button>
+        </div>
+
+        <div id="spinner" class="result hidden">
+            <img src="image/spinner.gif" width="16" height="16"/>
+        </div>
+    </div>
+</div>
+
+<div id="submitting">
+    <img src="image/logo-addons.png" style="float: left;"/>
+
+    <div style="margin-left: 100px;">
+        <h1>Sending Reports</h1>
+        <img id="submitspinner" src="image/spinner.gif"/>
+        <div id="submiterror" class="result hidden">
+            <p class="error">Your compatibility report could not be sent. Please try again later.</p>
+        </div>
+    </div>
+</div>
+
+<div id="finished">
+    <img src="image/logo-addons.png" style="float: left;"/>
+
+    <div style="margin-left: 100px;">
+        <h1>That's It!</h1>
+        <h2>Thank you so much for making Firefox a better place.</h2>
+    </div>
+</div>
+
+</body>
+</html>
+

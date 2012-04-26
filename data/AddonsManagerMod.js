@@ -61,6 +61,9 @@ self.port.on("acr_have_addon_report", function(addonReport) {
     
     var ACRUI = ACRController.makeButtonUI(addonReport);
 
+    if (!ACRUI)
+        return;
+
     if (gViewController.currentViewObj._listBox) 
     {
         for (var i=0; i<gViewController.currentViewObj._listBox.itemCount; i++)
@@ -76,10 +79,16 @@ self.port.on("acr_have_addon_report", function(addonReport) {
 
                 var existingACRUI = controlContainer.getElementsByAttribute("owner", "acr");
 
-                if (existingACRUI.length)
-                    controlContainer.replaceChild(ACRUI, existingACRUI.item(0));
-                else
-                    controlContainer.insertBefore(ACRUI, controlContainer.firstChild);
+                try {
+                    if (existingACRUI.length)
+                        controlContainer.replaceChild(ACRUI, existingACRUI.item(0));
+                    else if (controlContainer.childNodes.length > 0)
+                        controlContainer.insertBefore(ACRUI, controlContainer.firstChild);
+                    else
+                        controlContainer.appendChild(ACRUI);
+                } catch (e) {
+                    console.log(e.toString());
+                }
             }
         }
     }
@@ -134,29 +143,7 @@ ACRController.onViewChanged = function()
 
 ACRController.makeButtonUI = function(addonReport)
 {
-    if (addonReport.state == 0)
-    {
-        var button = document.createElement("button");
-        button.setAttribute("label", "Report Incompatibility");
-        button.setAttribute("type", "menu");
-        button.setAttribute("class", "anon-control");
-        button.setAttribute("owner", "acr");
-
-        //button.addEventListener("click", function() { ACRController.openSendReportDialog(addonReport); }, true);
-        button.addEventListener("click", function()
-        {
-            //ACRController.openSendReportDialog(addonReport);
-            self.port.emit("acr_open_submit_report_dialog", addonReport);
-        }, true);
-
-        return button;
-    }
-    else if (addonReport.state == 1)
-    {
-        // addon report cannot be "marked as compatible" in this version of the ACR
-        console.error("Addon report in unsupported state (1)");
-    }
-    else if (addonReport.state == 2)
+    if (addonReport.state == 2)
     {
         var hbox = document.createElement("hbox");
         hbox.setAttribute("owner", "acr");
@@ -167,11 +154,26 @@ ACRController.makeButtonUI = function(addonReport)
         image.setAttribute("src", this.exclamationImageURL);
         hbox.appendChild(image);
         var label = document.createElement("label");
-        label.setAttribute("value", "Compatibility Problems");
+        label.setAttribute("value", "Compatibility Problems"); // TODO l10n
         hbox.appendChild(label);
 
         return hbox;
     }
+
+    var button = document.createElement("button");
+    button.setAttribute("label", "Report Issue"); // TODO l10n
+    button.setAttribute("type", "menu");
+    button.setAttribute("class", "anon-control");
+    button.setAttribute("owner", "acr");
+
+    //button.addEventListener("click", function() { ACRController.openSendReportDialog(addonReport); }, true);
+    button.addEventListener("click", function()
+    {
+        //ACRController.openSendReportDialog(addonReport);
+        self.port.emit("acr_open_submit_report_dialog", addonReport);
+    }, true);
+
+    return button;
 }
 
 //Services.obs.addObserver(init, "EM-loaded", false);
