@@ -13,10 +13,12 @@ self.port.on("have_addon_reports", function(addonReports) {
     }
 
     for (var i=0; i<addonReports.length; i++) {
-        if (document.addonReports[i].state == 0)
-            document.addonReports[i].newstate = 1;
-        else
-            document.addonReports[i].newstate = addonReports[i].state;
+        if (!document.addonReports[i].newstate) {
+            if (document.addonReports[i].state == 0)
+                document.addonReports[i].newstate = 1;
+            else
+                document.addonReports[i].newstate = addonReports[i].state;
+        }
 
         var tr = document.createElement("tr");
 
@@ -42,7 +44,7 @@ self.port.on("have_addon_reports", function(addonReports) {
             let ix = i;
             return function() {
                 document.addonReports[ix].newstate = state;
-                // TODO save addonReport here (newstate) ?
+                self.port.emit("save_report", document.addonReports[ix]);
                 invalidate();
             };
         };
