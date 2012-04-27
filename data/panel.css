@@ -6,6 +6,21 @@ left: 10px;
 width: 360px;
 }
 
+#closeButton {
+position: absolute;
+top: 5px;
+right: 5px;
+border-style: inset;
+border-width: 1px;
+padding: 0 5px;
+font-weight: bold;
+z-index: 0;
+}
+
+#closeButton span {
+cursor: default;
+}
+
 body,table {
 font-family: sans-serif; 
 font-size: small;
@@ -44,8 +59,8 @@ font-size: 100%;
 width: 330px;
 }
 #scroller {
-height: 110px;
-max-height: 140px;
+height: 105px;
+max-height: 105px;
 overflow-y: auto;
 overflow-x: hidden;
 }

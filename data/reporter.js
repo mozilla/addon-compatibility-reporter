@@ -1,3 +1,6 @@
+document.addonReports = [];
+document.hasAnsweredQuestions = false;
+
 self.port.on("have_addon_reports", function(addonReports) {
 
     document.addonReports = addonReports;
@@ -12,11 +15,6 @@ self.port.on("have_addon_reports", function(addonReports) {
     }
 
     for (var i=0; i<addonReports.length; i++) {
-
-        if (addonReports[i].state == 0) {
-            addonReports[i].state = 1;
-        }
-
         var tr = document.createElement("tr");
 
         var img = document.createElement("img");
@@ -41,6 +39,7 @@ self.port.on("have_addon_reports", function(addonReports) {
             let ix = i;
             return function() {
                 document.addonReports[ix].state = state;
+                document.hasAnsweredQuestions = true;
                 self.port.emit("save_report", document.addonReports[ix]);
                 invalidate();
             };
@@ -112,10 +111,9 @@ var submitReport = function(report) {
 }
 
 var collectReports = function() {
-    //var collectedReports = [];
-
+    document.hasAnsweredQuestions = true;
     for (var i=0; i<document.addonReports.length; i++) {
-        console.log("addon " + document.addonReports[i].name + " has state = " + document.addonReports[i].state);
+        //console.log("addon " + document.addonReports[i].name + " has state = " + document.addonReports[i].state);
 
         if (document.addonReports[i].state == 2 && !document.addonReports[i].hasCollected) {
             // populate submit report panel
@@ -137,10 +135,6 @@ var collectReports = function() {
     }
 
     // all reports collected
-
-    for (var i=0; i<document.addonReports.length; i++) {
-        console.log("submitting report for " + document.addonReports[i].name + " has state = " + document.addonReports[i].state + ", report = '" + document.addonReports[i].report + "'");
-    }
 
     $('#submitspinner').show();
     $('.page').hide(); $('#submitting').show('slide', {}, 'slow');
@@ -175,4 +169,5 @@ self.port.on("submitted_report", function(addonReport) {
 document.getElementById("collectReportsButton").addEventListener("click", collectReports, true);
 document.getElementById("skipcommenta").addEventListener("click", function() { submitReport(""); }, true);
 document.getElementById("submitReportButton").addEventListener("click", function() { submitReport(document.getElementById("details").value); }, true);
+document.getElementById("closeButton").addEventListener("click", function() { self.port.emit("user_closed_panel", document.hasAnsweredQuestions); }, true);
 
