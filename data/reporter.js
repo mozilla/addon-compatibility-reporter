@@ -162,7 +162,7 @@ self.port.on("submitted_report", function(addonReport) {
     }
 
     if (finished) {
-        $('.page').hide(); $('#finished').show('slide', {}, 'slow');
+        $('.page').hide(); $('#finished').show();
     }
 });
 
