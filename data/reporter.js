@@ -1,23 +1,20 @@
-
 self.port.on("have_addon_reports", function(addonReports) {
 
     document.addonReports = addonReports;
 
-    var table = document.getElementById("addons");
-    document.getElementById("spinner").style.display = "none";
+    $('.page').hide(); $('#addonslist').show();
 
-    // TODO better behaviour here 
+    var table = document.getElementById("addons");
+    $('#spinner').hide();
 
     while (table.hasChildNodes()) {
         table.removeChild(table.childNodes[0]);
     }
 
     for (var i=0; i<addonReports.length; i++) {
-        if (!document.addonReports[i].newstate) {
-            if (document.addonReports[i].state == 0)
-                document.addonReports[i].newstate = 1;
-            else
-                document.addonReports[i].newstate = addonReports[i].state;
+
+        if (addonReports[i].state == 0) {
+            addonReports[i].state = 1;
         }
 
         var tr = document.createElement("tr");
@@ -43,7 +40,7 @@ self.port.on("have_addon_reports", function(addonReports) {
         var makeRadioClickFunction = function(state) {
             let ix = i;
             return function() {
-                document.addonReports[ix].newstate = state;
+                document.addonReports[ix].state = state;
                 self.port.emit("save_report", document.addonReports[ix]);
                 invalidate();
             };
@@ -85,16 +82,16 @@ var invalidate = function() {
         document.getElementById("cross-" + document.addonReports[i].guid).src = "image/cross_off.png";
         document.getElementById("questionmark-" + document.addonReports[i].guid).src = "image/questionmark_off.png";
 
-        if (document.addonReports[i].newstate == 2) {
+        if (document.addonReports[i].state == 2) {
             // has issues
             document.getElementById("cross-" + document.addonReports[i].guid).src
                 = "image/cross.png";
-        } else if (document.addonReports[i].newstate == 3) {
+        } else if (document.addonReports[i].state == 3) {
             // not sure
             document.getElementById("questionmark-" + document.addonReports[i].guid).src
                 = "image/questionmark.png";
         } else {
-            // no issues
+            // no issues or nothing selected yet
             document.getElementById("tick-" + document.addonReports[i].guid).src
                 = "image/tick.png";
         }
@@ -118,9 +115,9 @@ var collectReports = function() {
     //var collectedReports = [];
 
     for (var i=0; i<document.addonReports.length; i++) {
-        console.log("addon " + document.addonReports[i].name + " has newstate = " + document.addonReports[i].newstate);
+        console.log("addon " + document.addonReports[i].name + " has state = " + document.addonReports[i].state);
 
-        if (document.addonReports[i].newstate == 2 && !document.addonReports[i].hasCollected) {
+        if (document.addonReports[i].state == 2 && !document.addonReports[i].hasCollected) {
             // populate submit report panel
             document.getElementById("guid").value = document.addonReports[i].guid;
             document.getElementById("addon").textContent = document.addonReports[i].name;
@@ -129,7 +126,7 @@ var collectReports = function() {
             document.getElementById("details").value = "";
 
             // show submit report panel
-            $('#addonslist, #submitreport').hide('fast', function() { $('#submitreport').show('fast'); });
+            $('.page').hide(); $('#submitreport').show('slide',{},'slow');
 
             setTimeout(function() {
                     document.getElementById("details").focus();
@@ -142,14 +139,13 @@ var collectReports = function() {
     // all reports collected
 
     for (var i=0; i<document.addonReports.length; i++) {
-        console.log("submitting report for " + document.addonReports[i].name + " has newstate = " + document.addonReports[i].newstate + ", report = '" + document.addonReports[i].report + "'");
+        console.log("submitting report for " + document.addonReports[i].name + " has state = " + document.addonReports[i].state + ", report = '" + document.addonReports[i].report + "'");
     }
 
     $('#submitspinner').show();
-    $('#submiterror').hide();
-    $('#addonslist, #submitreport').hide('fast', function() { $('#submitting').show('fast'); });
+    $('.page').hide(); $('#submitting').show('slide', {}, 'slow');
 
-    self.port.emit("submit_reports", document.addonReports);
+    setTimeout(function() { self.port.emit("submit_reports", document.addonReports); }, 1000);
 }
 
 self.port.on("submit_report_error", function() {
@@ -171,8 +167,9 @@ self.port.on("submitted_report", function(addonReport) {
         }
     }
 
-    if (finished)
-        $('#submitting').hide('fast', function() { $('#finished').show('fast'); });
+    if (finished) {
+        $('.page').hide(); $('#finished').show('slide', {}, 'slow');
+    }
 });
 
 document.getElementById("collectReportsButton").addEventListener("click", collectReports, true);
