@@ -33,7 +33,9 @@ self.port.on("have_addon_reports", function(addonReports) {
         var img = document.createElement("img");
         img.setAttribute("class", "addon-image");
         img.setAttribute("src", addonReports[i].iconURL);
+
         var td1 = document.createElement("td");
+        td1.setAttribute("class", "image-cell");
         td1.appendChild(img);
         tr.appendChild(td1);
 
@@ -136,7 +138,7 @@ var collectReports = function() {
             document.getElementById("guid").value = document.addonReports[i].guid;
             document.getElementById("addon").textContent = document.addonReports[i].name;
             document.getElementById("version").textContent = document.addonReports[i].version;
-            document.getElementById("addon-image").src = document.addonReports[i].iconURL;
+            document.getElementById("details-addon-image").src = document.addonReports[i].iconURL;
             document.getElementById("details").value = "";
 
             // show submit report panel

@@ -46,8 +46,10 @@ margin: 0.5em;
 .success { color: green; }
 .hidden { display: none; }
 
-.addon-image {
+.image-cell {
 width: 48px;
+padding: 0px;
+text-align: center;
 }
 #addonslist h3 {
 display: block;
@@ -59,18 +61,20 @@ font-size: 100%;
 width: 330px;
 }
 #scroller {
-/*height: 110px;
-max-height: 110px;*/
 overflow-y: auto;
 overflow-x: hidden;
 }
 
 #version { color: gray; }
 textarea { width: 100%; }
-#addon-image {
+#details-addon-image-container {
+text-align: center;
 width: 64px;
-padding-left: 10px;
 float: left;
+}
+#details-form {
+margin-left: 80px;
+width: 260px;
 }
 #skipcomment {
 float: left;
