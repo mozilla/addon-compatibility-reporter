@@ -162,7 +162,6 @@ ACRController.makeButtonUI = function(addonReport)
 
     var button = document.createElement("button");
     button.setAttribute("label", "Report Issue"); // TODO l10n
-    button.setAttribute("type", "menu");
     button.setAttribute("class", "anon-control");
     button.setAttribute("owner", "acr");
 
