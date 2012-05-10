@@ -2,7 +2,7 @@ document.addonReports = [];
 document.hasAnsweredQuestions = false;
 document.initialized = false;
 
-self.port.on("have_addon_reports", function(data) {
+var initialize = function(data) {
 
     if (document.initialized && data.length == $('#addons tr').length)
         return;
@@ -82,6 +82,12 @@ self.port.on("have_addon_reports", function(data) {
 
     invalidate();
     document.initialized = true;
+};
+
+self.port.on("have_addon_reports", initialize);
+self.port.on("reset", function() {
+    document.initialized = false;
+    initialize(document.addonReports);
 });
 
 var invalidate = function() {
