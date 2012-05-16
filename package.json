@@ -2,9 +2,15 @@
     "name": "acr", 
     "license": "MPL 1.1/GPL 2.0/LGPL 2.1", 
     "author": "Mozilla Corporation", 
-    "contributors": ["Briks Software (http://briks.si)", "David McNamara", "Brian King", "Henrik Skupin", "Vlad Florin Maniac", "Ioana Chiorean", "Blair McBride"],
+    "contributors": ["Briks Software (http://briks.si)",
+                     "David McNamara",
+                     "Brian King",
+                     "Henrik Skupin",
+                     "Vlad Florin Maniac",
+                     "Ioana Chiorean",
+                     "Blair McBride"],
     "version": "2.0a1", 
-    "fullName": "Addon Compatibility Reporter", 
+    "fullName": "Add-on Compatibility Reporter", 
     "id": "compatibility@addons.mozilla.org", 
-    "description": "Allows add-on compatibility issues to be reported to Mozilla"
+    "description": "Report add-on compatibility issues to Mozilla"
 }
