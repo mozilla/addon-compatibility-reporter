@@ -48,5 +48,7 @@ self.port.on("submit_report_success", function(data) {
     document.getElementById("success").style.display = 'block';
 });
 
-document.getElementById("closeButton").addEventListener("click", function() { self.port.emit("user_closed_panel"); }, true);
-
+document.getElementById("closeButton").addEventListener("click", 
+    function(e) { 
+        self.port.emit("user_closed_panel");
+    }, false);

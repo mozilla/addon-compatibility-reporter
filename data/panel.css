@@ -7,18 +7,28 @@ width: 360px;
 }
 
 #closeButton {
-position: absolute;
-top: 5px;
-right: 5px;
-border-style: inset;
-border-width: 1px;
-padding: 0 5px;
-font-weight: bold;
-z-index: 0;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  width: 16px;
+  height: 16px;
+  background-image: url("image/close.png");
+  background-position: 0px 0px;
+  border: none !important;
+  z-index: 0;
 }
 
-#closeButton span {
-cursor: default;
+#closeButton:hover {
+  background-position: 16px 0px;
+}
+
+#closeButton:hover:active {
+  background-position: 32px 0px;
+}
+
+.closePlacement {
+  top: 10px !important;
+  right: 10px !important;
 }
 
 body,table {
