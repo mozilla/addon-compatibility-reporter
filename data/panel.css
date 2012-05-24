@@ -6,6 +6,13 @@ left: 10px;
 width: 360px;
 }
 
+.submitsinglereport {
+  display: block;
+  width: 360px;
+  top: 5px;
+  left: 5px;
+}
+
 #closeButton {
   position: absolute;
   top: 0px;
@@ -86,6 +93,9 @@ float: left;
 #details-form {
 margin-left: 80px;
 width: 260px;
+}
+.submitsinglereport #details-form {
+width: 290px;
 }
 #skipcomment {
 float: left;
