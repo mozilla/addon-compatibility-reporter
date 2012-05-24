@@ -48,7 +48,7 @@ width: 360px;
 }
 
 body,table {
-font-family: sans-serif; 
+font-family: sans-serif;
 font-size: small;
 }
 
@@ -127,10 +127,10 @@ min-height: 100px;
     background: transparent url(image/icons-acr.png) 0px 0px no-repeat;
 }
 
-.cross-off { background-position: -13px -12px; } 
-.tick-off { background-position: -43px -12px; } 
-.questionmark-off { background-position: -67px -12px; } 
-.cross-on { background-position: -13px -42px; } 
-.tick-on { background-position: -43px -42px; } 
-.questionmark-on { background-position: -67px -42px; } 
+.cross-off { background-position: -13px -12px; }
+.tick-off { background-position: -43px -12px; }
+.questionmark-off { background-position: -67px -12px; }
+.cross-on { background-position: -14px -42px; }
+.tick-on { background-position: -44px -42px; }
+.questionmark-on { background-position: -68px -42px; }
 
