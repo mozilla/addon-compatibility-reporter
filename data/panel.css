@@ -25,6 +25,11 @@ width: 360px;
   z-index: 0;
 }
 
+.submitsinglereport  #closeButton {
+  top: 5px;
+  right: 5px;
+}
+
 #closeButton:hover {
   background-position: 16px 0px;
 }
