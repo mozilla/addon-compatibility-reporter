@@ -101,3 +101,17 @@ text-decoration: none;
 background: url('image/logo-addons.png') 10px 10px no-repeat;
 min-height: 100px;
 }
+
+.cross-off, .cross-on, .tick-off, .tick-on, .questionmark-off, .questionmark-on {
+    width: 24px;
+    height: 24px;
+    background: transparent url(image/icons-acr.png) 0px 0px no-repeat;
+}
+
+.cross-off { background-position: -13px -12px; } 
+.tick-off { background-position: -43px -12px; } 
+.questionmark-off { background-position: -67px -12px; } 
+.cross-on { background-position: -13px -42px; } 
+.tick-on { background-position: -43px -42px; } 
+.questionmark-on { background-position: -67px -42px; } 
+

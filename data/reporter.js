@@ -54,7 +54,7 @@ var initialize = function(data) {
         };
 
         var td3 = document.createElement("td");
-        var tick = document.createElement("img");
+        var tick = document.createElement("div");
         tick.setAttribute("id", "tick-" + document.addonReports[i].guid);
         tick.setAttribute("title", "I have used this add-on with no issues"); // TODO title doesn't seem to work in panels????
         tick.addEventListener("click", makeRadioClickFunction(1), true);
@@ -62,20 +62,20 @@ var initialize = function(data) {
         tr.appendChild(td3);
 
         var td4 = document.createElement("td");
-        var cross = document.createElement("img");
+        var cross = document.createElement("div");
         cross.setAttribute("id", "cross-" + document.addonReports[i].guid);
         cross.setAttribute("title", "I have noticed issues due to this add-on");
         cross.addEventListener("click", makeRadioClickFunction(2), true);
         td4.appendChild(cross);
         tr.appendChild(td4);
 
-        var td3 = document.createElement("td");
-        var questionmark = document.createElement("img");
+        var td5 = document.createElement("td");
+        var questionmark = document.createElement("div");
         questionmark.setAttribute("id", "questionmark-" + document.addonReports[i].guid);
         questionmark.setAttribute("title", "I haven’t used this add-on so I’m not sure");
         questionmark.addEventListener("click", makeRadioClickFunction(3), true);
-        td4.appendChild(questionmark);
-        tr.appendChild(td4);
+        td5.appendChild(questionmark);
+        tr.appendChild(td5);
         
         table.appendChild(tr);
     }
@@ -92,22 +92,19 @@ self.port.on("reset", function() {
 
 var invalidate = function() {
     for (var i=0; i<document.addonReports.length; i++) {
-        document.getElementById("tick-" + document.addonReports[i].guid).src = "image/tick_off.png";
-        document.getElementById("cross-" + document.addonReports[i].guid).src = "image/cross_off.png";
-        document.getElementById("questionmark-" + document.addonReports[i].guid).src = "image/questionmark_off.png";
+        document.getElementById("tick-" + document.addonReports[i].guid).className = "tick-off";
+        document.getElementById("cross-" + document.addonReports[i].guid).className = "cross-off";
+        document.getElementById("questionmark-" + document.addonReports[i].guid).className = "questionmark-off";
 
         if (document.addonReports[i].state == 2) {
             // has issues
-            document.getElementById("cross-" + document.addonReports[i].guid).src
-                = "image/cross.png";
+            document.getElementById("cross-" + document.addonReports[i].guid).className = "cross-on";
         } else if (document.addonReports[i].state == 3) {
             // not sure
-            document.getElementById("questionmark-" + document.addonReports[i].guid).src
-                = "image/questionmark.png";
+            document.getElementById("questionmark-" + document.addonReports[i].guid).className = "questionmark-on";
         } else {
             // no issues or nothing selected yet
-            document.getElementById("tick-" + document.addonReports[i].guid).src
-                = "image/tick.png";
+            document.getElementById("tick-" + document.addonReports[i].guid).className = "tick-on";
         }
     }
 }
