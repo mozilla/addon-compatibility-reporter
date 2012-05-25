@@ -8,8 +8,9 @@
                      "Henrik Skupin",
                      "Vlad Florin Maniac",
                      "Ioana Chiorean",
-                     "Blair McBride"],
-    "version": "2.0b1", 
+                     "Blair McBride",
+                     "Gregory Koberger"],
+    "version": "2.0b2",
     "fullName": "Add-on Compatibility Reporter", 
     "id": "compatibility@addons.mozilla.org", 
     "description": "Report add-on compatibility issues to Mozilla"
