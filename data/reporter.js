@@ -7,11 +7,12 @@ document.hasAnsweredQuestions = false;
 document.initialized = false;
 
 var initialize = function(data) {
-
-    if (document.initialized && data.length == $('#addons tr').length)
-        return;
-
     document.addonReports = data;
+
+    if (document.initialized && data.length == $('#addons tr').length) {
+        invalidate();
+        return;
+    }
 
     $('.page').hide(); $('#addonslist').show(); $('#addons').empty();
 
