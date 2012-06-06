@@ -145,7 +145,7 @@ ACRController.makeButtonUI = function(addonReport)
 //Services.obs.addObserver(init, "EM-loaded", false);
 document.addEventListener("ViewChanged", ACRController.onViewChanged, true);
 
-if (gViewController) {
+var overlayContextMenuItems = function() {
     gViewController.commands.cmd_showCompatibilityResults = {
         isEnabled: function(aAddon) {
             return aAddon != null && aAddon.type != "plugin" && aAddon.type != "lwtheme";
@@ -193,4 +193,9 @@ if (gViewController) {
     c2.setAttribute("id", "cmd_clearCompatibilityReport");
     commandSet.appendChild(c2);
 }
+
+try {
+    overlayContextMenuItems();
+} catch (e) { console.warn("Could not overlay menu items; AOM may not have been initialized: "+ e.toString()); }
+
 
