@@ -145,50 +145,52 @@ ACRController.makeButtonUI = function(addonReport)
 //Services.obs.addObserver(init, "EM-loaded", false);
 document.addEventListener("ViewChanged", ACRController.onViewChanged, true);
 
-gViewController.commands.cmd_showCompatibilityResults = {
-    isEnabled: function(aAddon) {
-        return aAddon != null && aAddon.type != "plugin" && aAddon.type != "lwtheme";
-    },
-    doCommand: function(aAddon) {
-        openURL(ACRController.COMPATIBILITY_REPORT_URL_BASE + encodeURIComponent(aAddon.id));
-    }
-};
+if (gViewController) {
+    gViewController.commands.cmd_showCompatibilityResults = {
+        isEnabled: function(aAddon) {
+            return aAddon != null && aAddon.type != "plugin" && aAddon.type != "lwtheme";
+        },
+        doCommand: function(aAddon) {
+            openURL(ACRController.COMPATIBILITY_REPORT_URL_BASE + encodeURIComponent(aAddon.id));
+        }
+    };
 
-gViewController.commands.cmd_clearCompatibilityReport = {
-    isEnabled: function(aAddon) {   
-        if (aAddon == null 
-            || aAddon.type == "plugin"
-            || aAddon.type == "lwtheme"
-            || !ACRController.addonReports[aAddon.id]
-            || ACRController.addonReports[aAddon.id].state == 0)
-            return false;
+    gViewController.commands.cmd_clearCompatibilityReport = {
+        isEnabled: function(aAddon) {   
+            if (aAddon == null 
+                || aAddon.type == "plugin"
+                || aAddon.type == "lwtheme"
+                || !ACRController.addonReports[aAddon.id]
+                || ACRController.addonReports[aAddon.id].state == 0)
+                return false;
 
-        return true;
-    },
-    doCommand: function(aAddon) {   
-        if (aAddon)
-            self.port.emit("acr_clear_compatibility_report", aAddon.id);
-    }
-};
+            return true;
+        },
+        doCommand: function(aAddon) {   
+            if (aAddon)
+                self.port.emit("acr_clear_compatibility_report", aAddon.id);
+        }
+    };
 
-var contextMenu = document.getElementById("addonitem-popup");
+    var contextMenu = document.getElementById("addonitem-popup");
 
-var showCompatibilityResults = document.createElement("menuitem");
-showCompatibilityResults.setAttribute("command", "cmd_showCompatibilityResults");
-showCompatibilityResults.setAttribute("label", "Show Compatibility Results");
-contextMenu.appendChild(showCompatibilityResults);
+    var showCompatibilityResults = document.createElement("menuitem");
+    showCompatibilityResults.setAttribute("command", "cmd_showCompatibilityResults");
+    showCompatibilityResults.setAttribute("label", "Show Compatibility Results");
+    contextMenu.appendChild(showCompatibilityResults);
 
-var clearCompatibilityReport = document.createElement("menuitem");
-clearCompatibilityReport.setAttribute("command", "cmd_clearCompatibilityReport");
-clearCompatibilityReport.setAttribute("label", "Clear Compatibility Report");
-contextMenu.appendChild(clearCompatibilityReport);
+    var clearCompatibilityReport = document.createElement("menuitem");
+    clearCompatibilityReport.setAttribute("command", "cmd_clearCompatibilityReport");
+    clearCompatibilityReport.setAttribute("label", "Clear Compatibility Report");
+    contextMenu.appendChild(clearCompatibilityReport);
 
-var commandSet = document.getElementById("viewCommandSet");
-var c1 = document.createElement("command");
-c1.setAttribute("id", "cmd_showCompatibilityResults");
-commandSet.appendChild(c1);
+    var commandSet = document.getElementById("viewCommandSet");
+    var c1 = document.createElement("command");
+    c1.setAttribute("id", "cmd_showCompatibilityResults");
+    commandSet.appendChild(c1);
 
-var c2 = document.createElement("command");
-c2.setAttribute("id", "cmd_clearCompatibilityReport");
-commandSet.appendChild(c2);
+    var c2 = document.createElement("command");
+    c2.setAttribute("id", "cmd_clearCompatibilityReport");
+    commandSet.appendChild(c2);
+}
 
