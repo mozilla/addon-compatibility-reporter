@@ -37,6 +37,9 @@ self.port.on("init", function(data) {
 	function() { submit(""); },
 	true);
 
+    console.log("Setting document height to : " + data.panelHeight);
+    document.body.style.height = data.panelHeight + "px";
+
     setTimeout(function() {
         document.getElementById("details").focus();
     }, 500);

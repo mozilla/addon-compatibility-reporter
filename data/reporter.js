@@ -6,6 +6,8 @@ document.addonReports = [];
 document.hasAnsweredQuestions = false;
 document.initialized = false;
 
+var scrollSize = 0;
+
 var initialize = function(data) {
     document.addonReports = data;
 
@@ -140,8 +142,10 @@ var collectReports = function() {
             document.getElementById("details-addon-image").src = document.addonReports[i].iconURL;
             document.getElementById("details").value = "";
 
-            // show submit report panel
-            $('.page').hide(); $('#submitreport').show('slide',{},'slow');
+            // show and resize the submit report panel
+            $('.page').hide();
+            $('#submitreport').show('slide',{},'slow');
+            document.getElementById('submitreport').style.height = scrollSize-48 + "px";
 
             setTimeout(function() {
                     document.getElementById("details").focus();
@@ -162,6 +166,7 @@ var collectReports = function() {
 self.port.on("set_scroller_height", function(h) {
     document.getElementById('scroller').style.height = h + "px";
     document.getElementById('scroller').style.maxHeight = h + "px";
+    scrollSize = h;
 });
 
 self.port.on("submit_report_error", function() {
