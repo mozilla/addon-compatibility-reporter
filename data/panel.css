@@ -78,6 +78,10 @@ height: 48px;
 padding: 0px;
 text-align: center;
 }
+.addon-image {
+  max-width: 48px;
+  max-height: 48px;
+}
 #addonslist h3 {
 display: block;
 }
@@ -100,9 +104,13 @@ textarea {
   max-height: 100%;
 }
 #details-addon-image-container {
-text-align: center;
-width: 64px;
-float: left;
+  text-align: center;
+  width: 64px;
+  float: left;
+}
+#details-addon-image {
+  max-width: 64px;
+  max-height: 64px;
 }
 #details-form {
 margin-left: 80px;
@@ -138,4 +146,3 @@ min-height: 100px;
 .cross-on { background-position: -14px -42px; }
 .tick-on { background-position: -44px -42px; }
 .questionmark-on { background-position: -68px -42px; }
-
