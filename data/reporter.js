@@ -164,6 +164,8 @@ var collectReports = function() {
     $('#submitspinner').show();
     $('.page').hide(); $('#submitting').show('slide', {}, 'slow');
 
+    document.submittedReports = {};
+
     self.port.emit("submit_reports", document.addonReports);
 }
 
@@ -178,16 +180,11 @@ self.port.on("submit_report_error", function() {
     $('#submiterror').show();
 });
 
-self.port.on("submitted_report", function(addonReport) {
-
+var hasFinishedSubmittingReports = function() {
     var finished = true;
 
     for (var i=0; i<document.addonReports.length; i++) {
-        if (addonReport.guid == document.addonReports[i].guid) {
-            document.addonReports[i].hasSubmitted = true;
-        }
-
-        if (!document.addonReports[i].hasSubmitted) {
+        if (!document.submittedReports[document.addonReports[i].guid]) {
             finished = false;
         }
     }
@@ -195,6 +192,14 @@ self.port.on("submitted_report", function(addonReport) {
     if (finished) {
         $('.page').hide(); $('#finished').show();
     }
+}
+
+self.port.on("submitted_report", function(addonReport) {
+
+    document.submittedReports[addonReport.guid] = true;
+
+    clearTimeout(window.hasFinishedSubmittingReportsTimeout);
+    window.hasFinishedSubmittingReportsTimeout = setTimeout(hasFinishedSubmittingReports, 1000);
 });
 
 document.getElementById("collectReportsButton").addEventListener("click", collectReports, true);
