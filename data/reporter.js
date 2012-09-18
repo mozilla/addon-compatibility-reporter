@@ -25,6 +25,8 @@ var initialize = function(data) {
         /*if (document.getElementById('addon-' + document.addonReports[i].guid))
             continue;*/
 
+        document.addonReports[i].hasCollected = false;
+
         var tr = document.createElement("tr");
         //tr.setAttribute('id', 'addon-' + document.addonReports[i].guid);
 
@@ -152,6 +154,8 @@ var collectReports = function() {
                     }, 500);
 
             return;
+        } else {
+            document.addonReports[i].hasCollected = false;
         }
     }
 
