@@ -27,6 +27,7 @@ self.port.on("init", function(data) {
         document.getElementById("skipcomment").style.display = 'none';
         document.getElementById("buttons").style.display = 'none';
         document.getElementById("spinner").style.display = 'block';
+        document.getElementById("details").disabled = true;
     };
 
     document.getElementById("submitReportButton").addEventListener("click",
