@@ -5,7 +5,7 @@
 ACRController = {};
 
 ACRController.addonReports = {};
-ACRController.COMPATIBILITY_REPORT_URL_BASE = "https://addons.mozilla.org/en-US/firefox/compatibility/reporter/";
+ACRController.COMPATIBILITY_REPORT_URL_BASE = "https://addons.mozilla.org/compatibility/reporter/";
 
 self.port.on("acr_init", function(data) {
     ACRController.exclamationImageURL = data.exclamationImageURL;
