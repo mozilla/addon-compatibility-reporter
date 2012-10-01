@@ -2,8 +2,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-//console.log("in addonsManagerMod");
-
 ACRController = {};
 
 ACRController.addonReports = {};
@@ -54,7 +52,7 @@ self.port.on("acr_have_addon_report", function(addonReport) {
                     else
                         controlContainer.appendChild(ACRUI);
                 } catch (e) {
-                    console.log(e.toString());
+                    // console.log(e.toString());
                 }
             }
         }
@@ -103,7 +101,7 @@ ACRController.onViewChanged = function()
     }
     else if (gDetailView._addon)
     {
-        console.log(gDetailView._addon.id);
+        // console.log(gDetailView._addon.id);
         self.port.emit("acr_have_addon", gDetailView._addon.id);
     }
 }
@@ -196,6 +194,8 @@ var overlayContextMenuItems = function() {
 
 try {
     overlayContextMenuItems();
-} catch (e) { console.warn("Could not overlay menu items; AOM may not have been initialized: "+ e.toString()); }
+} catch (e) { 
+    // console.warn("Could not overlay menu items; AOM may not have been initialized: "+ e.toString());
+}
 
 

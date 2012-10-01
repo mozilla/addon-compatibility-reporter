@@ -3,7 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 self.port.on("init", function(data) {
-    console.log("Initializing submit report dialog for: " + data.guid);
+    // console.log("Initializing submit report dialog for: " + data.guid);
 
     document.getElementById("addon").textContent = data.addon;
     document.getElementById("version").textContent = data.version;
@@ -38,7 +38,7 @@ self.port.on("init", function(data) {
 	function() { submit(""); },
 	true);
 
-    console.log("Setting document height to : " + data.panelHeight);
+    // console.log("Setting document height to : " + data.panelHeight);
     document.body.style.height = data.panelHeight + "px";
 
     setTimeout(function() {
