@@ -154,8 +154,6 @@ var collectReports = function() {
                     }, 500);
 
             return;
-        } else {
-            document.addonReports[i].hasCollected = false;
         }
     }
 
@@ -192,6 +190,8 @@ var hasFinishedSubmittingReports = function() {
     if (finished) {
         $('.page').hide(); $('#finished').show();
     }
+
+    document.initialized = false;
 }
 
 self.port.on("submitted_report", function(addonReport) {
