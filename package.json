@@ -10,7 +10,7 @@
                      "Ioana Chiorean",
                      "Blair McBride",
                      "Gregory Koberger"],
-    "version": "2.0rc4",
+    "version": "2.0",
     "fullName": "Add-on Compatibility Reporter", 
     "id": "compatibility@addons.mozilla.org", 
     "description": "Report add-on compatibility issues to Mozilla"
