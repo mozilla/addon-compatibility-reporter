@@ -23,19 +23,19 @@ self.port.on("acr_have_addon_report", function(addonReport) {
 
     ACRController.addonReports[addonReport.guid] = addonReport;
     gViewController.updateCommands();
-    
+
     var ACRUI = ACRController.makeButtonUI(addonReport);
 
     if (!ACRUI)
         return;
 
-    if (gViewController.currentViewObj._listBox) 
-    {
-        for (var i=0; i<gViewController.currentViewObj._listBox.itemCount; i++)
-        {
-            var elem = gViewController.currentViewObj._listBox.getItemAtIndex(i);
 
-            if (elem.getAttribute("value") == addonReport.guid) 
+    let listBox = gViewController.currentViewObj._listBox;
+    if (listBox)
+    {
+        for (let elem of listBox.children)
+        {
+            if (elem.getAttribute("value") == addonReport.guid)
             {
                 var controlContainer = document.getAnonymousElementByAttribute(elem, 'anonid', 'control-container');
 
@@ -52,7 +52,7 @@ self.port.on("acr_have_addon_report", function(addonReport) {
                     else
                         controlContainer.appendChild(ACRUI);
                 } catch (e) {
-                    // console.log(e.toString());
+                    console.error(String(e));
                 }
             }
         }
@@ -83,12 +83,11 @@ ACRController.onViewChanged = function()
         existingACRUI.item(i).parentNode.removeChild(existingACRUI.item(i));
     */
 
-    if (gViewController.currentViewObj._listBox) 
+    let listBox = gViewController.currentViewObj._listBox;
+    if (listBox)
     {
-        for (var i=0; i<gViewController.currentViewObj._listBox.itemCount; i++)
+        for (let elem of listBox.children)
         {
-            var elem = gViewController.currentViewObj._listBox.getItemAtIndex(i);
-
             if (!elem
                 || elem.getAttribute("remote") == "true"
                 || elem.getAttribute("plugin") == "true"
@@ -144,58 +143,72 @@ ACRController.makeButtonUI = function(addonReport)
 document.addEventListener("ViewChanged", ACRController.onViewChanged, true);
 
 var overlayContextMenuItems = function() {
-    gViewController.commands.cmd_showCompatibilityResults = {
-        isEnabled: function(aAddon) {
-            return aAddon != null && aAddon.type != "plugin" && aAddon.type != "lwtheme";
-        },
-        doCommand: function(aAddon) {
-            openURL(ACRController.COMPATIBILITY_REPORT_URL_BASE + encodeURIComponent(aAddon.id));
-        }
-    };
-
-    gViewController.commands.cmd_clearCompatibilityReport = {
-        isEnabled: function(aAddon) {   
-            if (aAddon == null 
-                || aAddon.type == "plugin"
-                || aAddon.type == "lwtheme"
-                || !ACRController.addonReports[aAddon.id]
-                || ACRController.addonReports[aAddon.id].state == 0)
-                return false;
-
-            return true;
-        },
-        doCommand: function(aAddon) {   
-            if (aAddon)
-                self.port.emit("acr_clear_compatibility_report", aAddon.id);
-        }
-    };
 
     var contextMenu = document.getElementById("addonitem-popup");
+    if (contextMenu) {
+        var showCompatibilityResults = document.createElement("menuitem");
+        showCompatibilityResults.setAttribute("command", "cmd_showCompatibilityResults");
+        showCompatibilityResults.setAttribute("label", "Show Compatibility Results");
+        contextMenu.appendChild(showCompatibilityResults);
 
-    var showCompatibilityResults = document.createElement("menuitem");
-    showCompatibilityResults.setAttribute("command", "cmd_showCompatibilityResults");
-    showCompatibilityResults.setAttribute("label", "Show Compatibility Results");
-    contextMenu.appendChild(showCompatibilityResults);
-
-    var clearCompatibilityReport = document.createElement("menuitem");
-    clearCompatibilityReport.setAttribute("command", "cmd_clearCompatibilityReport");
-    clearCompatibilityReport.setAttribute("label", "Clear Compatibility Report");
-    contextMenu.appendChild(clearCompatibilityReport);
+        var clearCompatibilityReport = document.createElement("menuitem");
+        clearCompatibilityReport.setAttribute("command", "cmd_clearCompatibilityReport");
+        clearCompatibilityReport.setAttribute("label", "Clear Compatibility Report");
+        contextMenu.appendChild(clearCompatibilityReport);
+    }
+    else
+        console.error("No #addonitem-popup element found.");
 
     var commandSet = document.getElementById("viewCommandSet");
-    var c1 = document.createElement("command");
-    c1.setAttribute("id", "cmd_showCompatibilityResults");
-    commandSet.appendChild(c1);
+    if (commandSet) {
+        var c1 = document.createElement("command");
+        c1.setAttribute("id", "cmd_showCompatibilityResults");
+        commandSet.appendChild(c1);
 
-    var c2 = document.createElement("command");
-    c2.setAttribute("id", "cmd_clearCompatibilityReport");
-    commandSet.appendChild(c2);
+        var c2 = document.createElement("command");
+        c2.setAttribute("id", "cmd_clearCompatibilityReport");
+        commandSet.appendChild(c2);
+
+        gViewController.commands.cmd_showCompatibilityResults = {
+            isEnabled: function(aAddon) {
+                return aAddon != null && aAddon.type != "plugin" && aAddon.type != "lwtheme";
+            },
+            doCommand: function(aAddon) {
+                openURL(ACRController.COMPATIBILITY_REPORT_URL_BASE + encodeURIComponent(aAddon.id));
+            }
+        };
+
+        gViewController.commands.cmd_clearCompatibilityReport = {
+            isEnabled: function(aAddon) {
+                if (aAddon == null
+                    || aAddon.type == "plugin"
+                    || aAddon.type == "lwtheme"
+                    || !ACRController.addonReports[aAddon.id]
+                    || ACRController.addonReports[aAddon.id].state == 0)
+                    return false;
+
+                return true;
+            },
+            doCommand: function(aAddon) {
+                if (aAddon)
+                    self.port.emit("acr_clear_compatibility_report", aAddon.id);
+            }
+        };
+    }
+    else
+        console.error("No #viewCommandSet element found.");
 }
 
 try {
     overlayContextMenuItems();
-} catch (e) { 
-    // console.warn("Could not overlay menu items; AOM may not have been initialized: "+ e.toString());
+    ACRController.onViewChanged();
+} catch (e) {
+    // console.error(e) here winds up with a report about an empty
+    // object, presumably due to structured clone not handling
+    // Error objects, and the content-side console code not bothering
+    // either.
+
+    let msg = "A thing hath occurred: " + e;
+    if (e.stack)
+        msg += "\n" + e.stack
 }
-
-
