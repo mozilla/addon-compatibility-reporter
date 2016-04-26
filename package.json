@@ -1,7 +1,7 @@
 {
-    "name": "acr", 
-    "license": "MPL 2", 
-    "author": "Mozilla Corporation", 
+    "name": "acr",
+    "license": "MPL-2.0",
+    "author": "Mozilla Corporation",
     "contributors": ["Briks Software (http://briks.si)",
                      "David McNamara",
                      "Brian King",
@@ -11,7 +11,8 @@
                      "Blair McBride",
                      "Gregory Koberger"],
     "version": "2.0.6",
-    "fullName": "Add-on Compatibility Reporter", 
-    "id": "compatibility@addons.mozilla.org", 
-    "description": "Report add-on compatibility issues to Mozilla"
+    "title": "Add-on Compatibility Reporter",
+    "id": "compatibility@addons.mozilla.org",
+    "description": "Report add-on compatibility issues to Mozilla",
+    "main": "lib/main.js"
 }
