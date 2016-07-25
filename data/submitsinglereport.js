@@ -21,7 +21,8 @@ self.port.on("init", function(data) {
             guid: data.guid,
             details: comment,
             includeAddons: false/*document.getElementById("includeAddons").checked*/,
-            disableAddon: false/*document.getElementById("disableAddon").checked*/
+            disableAddon: false/*document.getElementById("disableAddon").checked*/,
+            multiprocessCompatible : data.multiprocessCompatible
         };
         self.port.emit("submit_report", submitData);
         document.getElementById("skipcomment").style.display = 'none';
