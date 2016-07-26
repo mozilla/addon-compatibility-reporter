@@ -50,6 +50,11 @@ var initialize = function(data) {
         version.appendChild(document.createTextNode("Version "));
         version.appendChild(document.createTextNode(document.addonReports[i].version));
         td2.appendChild(version);
+
+        var e10s = document.createElement("div");
+        e10s.setAttribute("class", "version");
+        e10s.appendChild(document.createTextNode((document.addonReports[i].multiprocessCompatible ? "Compatible" : "Not compatible") + " with multi-process."));
+        td2.appendChild(e10s);
         tr.appendChild(td2);
 
         var makeRadioClickFunction = function(state) {
@@ -91,6 +96,10 @@ var initialize = function(data) {
     invalidate();
     document.initialized = true;
 };
+
+self.port.on("app_e10s_enabled", function(enabled) {
+    $("#appE10sEnabled").text("Multi-process is " + (enabled ? "" : "not ") + "enabled.");
+});
 
 self.port.on("have_addon_reports", initialize);
 self.port.on("reset", function() {
