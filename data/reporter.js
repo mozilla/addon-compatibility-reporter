@@ -32,7 +32,7 @@ var initialize = function(data) {
 
         var img = document.createElement("img");
         img.setAttribute("class", "addon-image");
-        img.setAttribute("src", document.addonReports[i].iconURL);
+        img.setAttribute("src", document.addonReports[i].icon);
 
         var td1 = document.createElement("td");
         td1.setAttribute("class", "image-cell");
@@ -85,7 +85,6 @@ var initialize = function(data) {
         questionmark.addEventListener("click", makeRadioClickFunction(3), true);
         td5.appendChild(questionmark);
         tr.appendChild(td5);
-        
         table.appendChild(tr);
     }
 
@@ -141,7 +140,7 @@ var collectReports = function() {
             document.getElementById("guid").value = document.addonReports[i].guid;
             document.getElementById("addon").textContent = document.addonReports[i].name;
             document.getElementById("version").textContent = document.addonReports[i].version;
-            document.getElementById("details-addon-image").src = document.addonReports[i].iconURL;
+            document.getElementById("details-addon-image").src = document.addonReports[i].icon;
             document.getElementById("details").value = "";
 
             // show and resize the submit report panel
