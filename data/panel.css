@@ -7,12 +7,12 @@ display: none;
 position: absolute;
 top: 10px;
 left: 10px;
-width: 360px;
+width: 380px;
 }
 
 .submitsinglereport {
   display: block;
-  width: 360px;
+  width: 420px;
   top: 5px;
   left: 5px;
 }
@@ -88,7 +88,7 @@ display: block;
 font-size: 100%;
 }
 #addons {
-width: 340px;
+width: 380px;
 }
 #scroller {
 overflow-y: auto;
@@ -113,14 +113,14 @@ textarea {
 }
 #details-form {
 margin-left: 80px;
-width: 275px;
+width: 300px;
 }
 .submitsinglereport #details-form {
-width: 290px;
+width: 320px;
 }
 #skipcomment {
 float: left;
-width: 7em;
+width: 8em;
 padding: 0.5em;
 }
 #skipcomment a:link {
