@@ -7,7 +7,7 @@ self.port.on("init", function(data) {
 
     document.getElementById("addon").textContent = data.addon;
     document.getElementById("version").textContent = data.version;
-    document.getElementById("details-addon-image").src = data.iconURL;
+    document.getElementById("details-addon-image").src = data.icon;
     document.getElementById("details").value = data.details;
     //document.getElementById("application").textContent = data.application;
     //document.getElementById("operatingSystem").textContent = data.operatingSystem;
