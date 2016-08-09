@@ -14,5 +14,8 @@
     "title": "Add-on Compatibility Reporter",
     "id": "compatibility@addons.mozilla.org",
     "description": "Report add-on compatibility issues to Mozilla",
-    "main": "lib/main.js"
+    "main": "lib/main.js",
+    "permissions": {
+        "multiprocess": true
+    }
 }
