@@ -16,7 +16,9 @@ var initialize = function(data) {
         return;
     }
 
-    $('.page').hide(); $('#addonslist').show(); $('#addons').empty();
+    $('.page').hide();
+    $('#addonslist').show();
+    $('#addons').empty();
 
     var table = document.getElementById("addons");
     $('#spinner').hide();
@@ -105,16 +107,19 @@ var initialize = function(data) {
     document.initialized = true;
 };
 
-self.port.on("app_e10s_enabled", function(enabled) {
-    $("#appE10sEnabled").empty();
-    var e10s_link = document.createElement("a");
-    e10s_link.setAttribute("href", "#");
-    e10s_link.addEventListener("click", function() {
+self.port.on("app_e10s_enabled", function(appE10sEnabled, addonE10sEnabled) {
+    $(".appE10sEnabled").html('<a href="#">Multi-process</a> is ' +
+                              (appE10sEnabled ? '' : 'not ') + 'enabled.');
+    $(".appE10sEnabled a").on("click", function() {
         self.port.emit("openE10sIntroLink");
     });
-    e10s_link.appendChild(document.createTextNode("Multi-process"));
-    document.getElementById("appE10sEnabled").appendChild(e10s_link);
-    document.getElementById("appE10sEnabled").appendChild(document.createTextNode(" is " + (enabled ? "" : "not ") + "enabled."));
+
+    $(".multiProcessEnabled").html(
+      (addonE10sEnabled ? 'Compatible' : 'Not compatible') +
+      ' with <a href="#">multi-process</a>.');
+    $(".multiProcessEnabled a").on("click", function() {
+        self.port.emit("openE10sIntroLink");
+    });
 });
 
 self.port.on("have_addon_reports", initialize);
@@ -230,4 +235,3 @@ document.getElementById("collectReportsButton").addEventListener("click", collec
 document.getElementById("skipcommenta").addEventListener("click", function() { submitReport(""); }, true);
 document.getElementById("submitReportButton").addEventListener("click", function() { submitReport(document.getElementById("details").value); }, true);
 document.getElementById("closeButton").addEventListener("click", function() { self.port.emit("user_closed_panel", document.hasAnsweredQuestions); }, true);
-
