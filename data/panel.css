@@ -96,6 +96,13 @@ overflow-x: hidden;
 }
 
 #version { color: gray; }
+#submitReportButton + .appE10sEnabled {
+  display: block;
+}
+.multiProcessEnabled {
+  display: block;
+  font-weight: normal;
+}
 textarea {
   resize: none;
   width: 100%;
