@@ -60,7 +60,7 @@ var initialize = function(data) {
         e10s_link.addEventListener("click", function() {
             self.port.emit("openE10sIntroLink");
         });
-        e10s_link.appendChild(document.createTextNode("multi-process"));
+        e10s_link.appendChild(document.createTextNode("multiprocess"));
         e10s.appendChild(document.createTextNode((document.addonReports[i].multiprocessCompatible ? "Compatible" : "Not compatible") + " with "));
         e10s.appendChild(e10s_link);
         e10s.appendChild(document.createTextNode("."));
@@ -108,7 +108,7 @@ var initialize = function(data) {
 };
 
 self.port.on("app_e10s_enabled", function(appE10sEnabled, addonE10sEnabled) {
-    $(".appE10sEnabled").html('<a href="#">Multi-process</a> is ' +
+    $(".appE10sEnabled").html('<a href="#">Multiprocess</a> is ' +
                               (appE10sEnabled ? '' : 'not ') + 'enabled.');
     $(".appE10sEnabled a").on("click", function() {
         self.port.emit("openE10sIntroLink");
@@ -116,7 +116,7 @@ self.port.on("app_e10s_enabled", function(appE10sEnabled, addonE10sEnabled) {
 
     $(".multiProcessEnabled").html(
       (addonE10sEnabled ? 'Compatible' : 'Not compatible') +
-      ' with <a href="#">multi-process</a>.');
+      ' with <a href="#">multiprocess</a>.');
     $(".multiProcessEnabled a").on("click", function() {
         self.port.emit("openE10sIntroLink");
     });

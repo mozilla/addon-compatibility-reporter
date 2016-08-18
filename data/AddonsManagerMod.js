@@ -9,6 +9,9 @@ ACRController.COMPATIBILITY_REPORT_URL_BASE = "https://addons.mozilla.org/compat
 
 self.port.on("acr_init", function(data) {
     ACRController.exclamationImageURL = data.exclamationImageURL;
+    ACRController.informationImageURL = data.informationImageURL;
+    ACRController.appE10sEnabled = data.appE10sEnabled;
+    ACRController.addAppE10sStatus();
 });
 
 self.port.on("acr_refresh", function(data) {
@@ -28,7 +31,6 @@ self.port.on("acr_have_addon_report", function(addonReport) {
 
     if (!ACRUI)
         return;
-
 
     let listBox = gViewController.currentViewObj._listBox;
     if (listBox)
@@ -71,8 +73,7 @@ self.port.on("acr_have_addon_report", function(addonReport) {
     }
 });
 
-ACRController.onViewChanged = function()
-{
+ACRController.onViewChanged = function() {
     //console.log("in view changed: " + gViewController.currentViewId);
     //console.log("addon count: " + document.getElementById("addon-list").itemCount);
 
@@ -84,33 +85,28 @@ ACRController.onViewChanged = function()
     */
 
     let listBox = gViewController.currentViewObj._listBox;
-    if (listBox)
-    {
-        for (let elem of listBox.children)
-        {
-            if (!elem
-                || elem.getAttribute("remote") == "true"
-                || elem.getAttribute("plugin") == "true"
-                || elem.getAttribute("lwtheme") == "true"
-                || elem.getAttribute("type") == "plugin")
-                continue;
-
-            self.port.emit("acr_have_addon", elem.getAttribute("value"));
+    if (listBox) {
+        for (let elem of listBox.children) {
+            if (elem
+                && elem.getAttribute("remote") === "false"
+                && elem.getAttribute("type") === "extension") {
+                self.port.emit("acr_have_addon", elem.getAttribute("value"));
+            }
         }
     }
-    else if (gDetailView._addon)
-    {
+    else if (gDetailView._addon) {
         // console.log(gDetailView._addon.id);
         self.port.emit("acr_have_addon", gDetailView._addon.id);
     }
 }
 
-ACRController.makeButtonUI = function(addonReport)
-{
-    if (addonReport.state == 2)
-    {
+ACRController.makeButtonUI = function(addonReport) {
+    var hbox_outer = document.createElement("hbox");
+    hbox_outer.setAttribute("owner", "acr");
+    hbox_outer.appendChild(this.makeE10sInfo(addonReport));
+
+    if (addonReport.state == 2) {
         var hbox = document.createElement("hbox");
-        hbox.setAttribute("owner", "acr");
         hbox.setAttribute("align", "center");
         var image = document.createElement("image");
         image.setAttribute("width", "16");
@@ -121,22 +117,59 @@ ACRController.makeButtonUI = function(addonReport)
         label.setAttribute("value", "Compatibility Problems"); // TODO l10n
         hbox.appendChild(label);
 
-        return hbox;
+        hbox_outer.appendChild(hbox);
+    } else {
+        var button = document.createElement("button");
+        button.setAttribute("label", "Report Issue");
+        button.setAttribute("class", "anon-control");
+
+        //button.addEventListener("click", function() { ACRController.openSendReportDialog(addonReport); }, true);
+        button.addEventListener("click", function() {
+            //ACRController.openSendReportDialog(addonReport);
+            self.port.emit("acr_open_submit_report_dialog", addonReport);
+        }, true);
+        hbox_outer.appendChild(button);
     }
+    return hbox_outer;
+}
 
-    var button = document.createElement("button");
-    button.setAttribute("label", "Report Issue"); // TODO l10n
-    button.setAttribute("class", "anon-control");
-    button.setAttribute("owner", "acr");
+ACRController.makeE10sInfo = function(addonReport) {
+    var hbox = document.createElement("hbox");
+    hbox.setAttribute("owner", "acr");
+    hbox.setAttribute("align", "center");
+    var image = document.createElement("image");
+    image.setAttribute("width", "16");
+    image.setAttribute("height", "16");
+    image.setAttribute("src", this.informationImageURL);
+    hbox.appendChild(image);
 
-    //button.addEventListener("click", function() { ACRController.openSendReportDialog(addonReport); }, true);
-    button.addEventListener("click", function()
-    {
-        //ACRController.openSendReportDialog(addonReport);
-        self.port.emit("acr_open_submit_report_dialog", addonReport);
-    }, true);
+    var label = document.createElement("label");
+    label.setAttribute("value", (addonReport.multiprocessCompatible ? "Compatible" : "Not compatible") + " with multiprocess."); // TODO l10n
+    hbox.appendChild(label);
+    return hbox;
+}
 
-    return button;
+ACRController.addAppE10sStatus = function() {
+    let hbox = document.createElement("hbox");
+    hbox.style.paddingRight = "48px";
+
+    let spacer = document.createElement("spacer");
+    spacer.setAttribute("flex", "1");
+    hbox.appendChild(spacer);
+
+    let labelStatus = document.createElement("label");
+    labelStatus.setAttribute("value", "Multiprocess is " + (this.appE10sEnabled ? "" : "not ") + "enabled.");
+    labelStatus.style.fontWeight = "bold";
+    hbox.appendChild(labelStatus);
+
+    let labelLearnMore = document.createElement("label");
+    labelLearnMore.classList.add("text-link");
+    labelLearnMore.setAttribute("href", "https://wiki.mozilla.org/Firefox/multiprocess");
+    labelLearnMore.setAttribute("value", "More information");
+    hbox.appendChild(labelLearnMore);
+
+    let addonList = document.getElementById("addon-list")
+    addonList.parentNode.insertBefore(hbox, addonList);
 }
 
 //Services.obs.addObserver(init, "EM-loaded", false);
