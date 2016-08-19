@@ -125,7 +125,6 @@ self.port.on("app_e10s_enabled", function(appE10sEnabled, addonE10sEnabled) {
 self.port.on("have_addon_reports", initialize);
 self.port.on("reset", function() {
     document.initialized = false;
-    initialize(document.addonReports);
 });
 
 var invalidate = function() {
