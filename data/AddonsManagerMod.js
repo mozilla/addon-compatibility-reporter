@@ -10,6 +10,7 @@ ACRController.COMPATIBILITY_REPORT_URL_BASE = "https://addons.mozilla.org/compat
 self.port.on("acr_init", function(data) {
     ACRController.exclamationImageURL = data.exclamationImageURL;
     ACRController.informationImageURL = data.informationImageURL;
+    ACRController.warningImageURL = data.warningImageURL;
     ACRController.appE10sEnabled = data.appE10sEnabled;
     ACRController.addAppE10sStatus();
 });
@@ -140,7 +141,7 @@ ACRController.makeE10sInfo = function(addonReport) {
     var image = document.createElement("image");
     image.setAttribute("width", "16");
     image.setAttribute("height", "16");
-    image.setAttribute("src", this.informationImageURL);
+    image.setAttribute("src", (addonReport.multiprocessCompatible ? this.informationImageURL : this.warningImageURL));
     hbox.appendChild(image);
 
     var label = document.createElement("label");
