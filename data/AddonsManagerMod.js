@@ -161,6 +161,7 @@ ACRController.addAppE10sStatus = function() {
     let labelStatus = document.createElement("label");
     labelStatus.setAttribute("value", "Multiprocess is " + (this.appE10sEnabled ? "" : "not ") + "enabled.");
     labelStatus.style.fontWeight = "bold";
+    labelStatus.style.marginBottom = "10px";
     hbox.appendChild(labelStatus);
 
     let labelLearnMore = document.createElement("label");
