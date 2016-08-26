@@ -10,12 +10,15 @@
                      "Ioana Chiorean",
                      "Blair McBride",
                      "Gregory Koberger"],
-    "version": "2.1.2",
+    "version": "2.2.0",
     "title": "Add-on Compatibility Reporter",
     "id": "compatibility@addons.mozilla.org",
     "description": "Report add-on compatibility issues to Mozilla",
     "main": "lib/main.js",
     "permissions": {
         "multiprocess": true
-    }
+    },
+    "engines": {
+        "firefox": ">=39.0a1"
+  }
 }
