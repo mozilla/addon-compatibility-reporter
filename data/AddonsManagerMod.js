@@ -206,7 +206,7 @@ var overlayContextMenuItems = function() {
 
         gViewController.commands.cmd_showCompatibilityResults = {
             isEnabled: function(aAddon) {
-                return aAddon != null && aAddon.type != "plugin" && aAddon.type != "lwtheme";
+                return aAddon != null && aAddon.type === "extension";
             },
             doCommand: function(aAddon) {
                 openURL(ACRController.COMPATIBILITY_REPORT_URL_BASE + encodeURIComponent(aAddon.id));
@@ -216,8 +216,7 @@ var overlayContextMenuItems = function() {
         gViewController.commands.cmd_clearCompatibilityReport = {
             isEnabled: function(aAddon) {
                 if (aAddon == null
-                    || aAddon.type == "plugin"
-                    || aAddon.type == "lwtheme"
+                    || aAddon.type !== "extension"
                     || !ACRController.addonReports[aAddon.id]
                     || ACRController.addonReports[aAddon.id].state == 0)
                     return false;
