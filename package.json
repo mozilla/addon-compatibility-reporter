@@ -12,7 +12,7 @@
                      "Gregory Koberger",
                      "tofumatt",
                      "Andreas Wagner"],
-    "version": "2.2.3",
+    "version": "2.2.4",
     "title": "Add-on Compatibility Reporter",
     "id": "compatibility@addons.mozilla.org",
     "description": "Report add-on compatibility issues to Mozilla",
